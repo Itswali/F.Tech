@@ -18,7 +18,7 @@ app.use(express.json());
 app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
 
-// Health check endpoint
+
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'OK', message: 'F.Tech API is running' });
 });
