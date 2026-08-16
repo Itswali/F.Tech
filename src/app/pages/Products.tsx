@@ -13,16 +13,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../components/ui/select";
-import { products } from "../data/products";
+import type { Product } from "../data/products";
 
 const PRODUCTS_PER_PAGE = 24;
 
-const PRICE_MAX = Math.max(999, ...products.map((p) => p.price));
-
-const createDefaultFilters = (initialCat?: string | null): Filters => ({
+const createDefaultFilters = (initialCat?: string | null, maxPrice = 999): Filters => ({
   categories: initialCat ? [initialCat] : [],
   brands: [],
-  price: [0, PRICE_MAX],
+  price: [0, maxPrice],
   inStockOnly: false,
 });
 
@@ -31,11 +29,31 @@ export function Products() {
   const initialCat = searchParams.get("category");
   const initialSearch = searchParams.get("q") || "";
 
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
   const [filters, setFilters] = useState<Filters>(() => createDefaultFilters(initialCat));
   const [search, setSearch] = useState(initialSearch);
   const [sort, setSort] = useState("featured");
   const [page, setPage] = useState(1);
   const [sheetOpen, setSheetOpen] = useState(false);
+
+  useEffect(() => {
+    fetch("https://f-tech-backend.onrender.com/api/products")
+      .then((res) => res.json())
+      .then((data: Product[]) => {
+        setProducts(data);
+        const maxPrice = data.length > 0 ? Math.max(...data.map(p => p.price)) : 999;
+        setFilters(f => ({ ...f, price: [f.price?.[0] ?? 0, Math.max(f.price?.[1] ?? maxPrice, maxPrice)] }));
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
+  const PRICE_MAX = useMemo(() => products.length > 0 ? Math.max(...products.map(p => p.price)) : 999, [products]);
 
   // Sync URL param to filter state
   useEffect(() => {
@@ -47,13 +65,13 @@ export function Products() {
     if (q !== search) setSearch(q);
   }, [searchParams]);
 
-  // Dynamic brands from static catalog
+  // Dynamic brands from catalog
   const brands = useMemo(
     () => [...new Set(products.map((p) => p.brand).filter(Boolean))].sort(),
-    []
+    [products]
   );
 
-  // Apply filters to static catalog
+  // Apply filters to catalog
   const filtered = useMemo(() => {
     let result = [...products];
 
@@ -75,7 +93,7 @@ export function Products() {
     }
     if (filters.price) {
       result = result.filter(
-        (p) => p.price >= filters.price[0] && p.price <= filters.price[1]
+        (p) => p.price >= filters.price![0] && p.price <= filters.price![1]
       );
     }
     if (filters.inStockOnly) {
@@ -93,7 +111,7 @@ export function Products() {
     }
 
     return result;
-  }, [filters, search, sort]);
+  }, [products, filters, search, sort]);
 
   // Paginate
   const totalPages = Math.ceil(filtered.length / PRODUCTS_PER_PAGE);
@@ -115,7 +133,7 @@ export function Products() {
   };
 
   const handleReset = () => {
-    setFilters(createDefaultFilters(null));
+    setFilters(createDefaultFilters(null, PRICE_MAX));
     setSearch("");
     setSearchParams({}, { replace: true });
     setPage(1);
@@ -138,7 +156,7 @@ export function Products() {
           All Products
         </h1>
         <p className="mt-2 text-muted-foreground">
-          {filtered.length} products found
+          {loading ? "Loading products..." : `${filtered.length} products found`}
         </p>
       </div>
 
@@ -184,80 +202,88 @@ export function Products() {
             </Select>
           </div>
 
-          {/* Empty state */}
-          {paginated.length === 0 && (
-            <div className="flex flex-col items-center justify-center py-24 text-center text-muted-foreground">
-              <PackageX className="mb-4 size-16 opacity-20" />
-              <p className="text-lg font-semibold">No products found</p>
-              <p className="mt-2 text-sm">Try adjusting your filters or search term.</p>
-              <Button
-                variant="outline"
-                className="mt-6"
-                onClick={handleReset}
-              >
-                Clear all filters
-              </Button>
-            </div>
-          )}
-
-          {/* Product grid */}
-          {paginated.length > 0 && (
+          {loading ? (
+             <div className="flex flex-col items-center justify-center py-24 text-center text-muted-foreground">
+                <p className="text-lg font-semibold">Loading data...</p>
+             </div>
+          ) : (
             <>
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {paginated.map((product) => (
-                  <ProductCard key={product.slug} product={product} />
-                ))}
-              </div>
-
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="mt-10 flex items-center justify-center gap-2">
+              {/* Empty state */}
+              {paginated.length === 0 && (
+                <div className="flex flex-col items-center justify-center py-24 text-center text-muted-foreground">
+                  <PackageX className="mb-4 size-16 opacity-20" />
+                  <p className="text-lg font-semibold">No products found</p>
+                  <p className="mt-2 text-sm">Try adjusting your filters or search term.</p>
                   <Button
                     variant="outline"
-                    size="sm"
-                    disabled={page === 1}
-                    onClick={() => { setPage((p) => p - 1); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                    className="mt-6"
+                    onClick={handleReset}
                   >
-                    ← Previous
-                  </Button>
-                  <div className="flex gap-1">
-                    {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
-                      const p = i + 1;
-                      return (
-                        <button
-                          key={p}
-                          onClick={() => { setPage(p); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                          className={`size-9 rounded-xl text-sm font-medium transition-colors ${
-                            page === p
-                              ? "bg-primary text-primary-foreground"
-                              : "border border-border hover:bg-accent"
-                          }`}
-                        >
-                          {p}
-                        </button>
-                      );
-                    })}
-                    {totalPages > 7 && <span className="flex size-9 items-center justify-center text-muted-foreground">…</span>}
-                    {totalPages > 7 && (
-                      <button
-                        onClick={() => { setPage(totalPages); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                        className={`size-9 rounded-xl text-sm font-medium transition-colors ${
-                          page === totalPages ? "bg-primary text-primary-foreground" : "border border-border hover:bg-accent"
-                        }`}
-                      >
-                        {totalPages}
-                      </button>
-                    )}
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    disabled={page === totalPages}
-                    onClick={() => { setPage((p) => p + 1); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                  >
-                    Next →
+                    Clear all filters
                   </Button>
                 </div>
+              )}
+
+              {/* Product grid */}
+              {paginated.length > 0 && (
+                <>
+                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    {paginated.map((product) => (
+                      <ProductCard key={product.slug} product={product} />
+                    ))}
+                  </div>
+
+                  {/* Pagination */}
+                  {totalPages > 1 && (
+                    <div className="mt-10 flex items-center justify-center gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={page === 1}
+                        onClick={() => { setPage((p) => p - 1); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                      >
+                        ← Previous
+                      </Button>
+                      <div className="flex gap-1">
+                        {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
+                          const p = i + 1;
+                          return (
+                            <button
+                              key={p}
+                              onClick={() => { setPage(p); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                              className={`size-9 rounded-xl text-sm font-medium transition-colors ${
+                                page === p
+                                  ? "bg-primary text-primary-foreground"
+                                  : "border border-border hover:bg-accent"
+                              }`}
+                            >
+                              {p}
+                            </button>
+                          );
+                        })}
+                        {totalPages > 7 && <span className="flex size-9 items-center justify-center text-muted-foreground">…</span>}
+                        {totalPages > 7 && (
+                          <button
+                            onClick={() => { setPage(totalPages); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                            className={`size-9 rounded-xl text-sm font-medium transition-colors ${
+                              page === totalPages ? "bg-primary text-primary-foreground" : "border border-border hover:bg-accent"
+                            }`}
+                          >
+                            {totalPages}
+                          </button>
+                        )}
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={page === totalPages}
+                        onClick={() => { setPage((p) => p + 1); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                      >
+                        Next →
+                      </Button>
+                    </div>
+                  )}
+                </>
               )}
             </>
           )}

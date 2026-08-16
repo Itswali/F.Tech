@@ -7,7 +7,7 @@ export function TermsOfService() {
       <div className="prose prose-sm max-w-none space-y-8 text-muted-foreground [&_h2]:mb-3 [&_h2]:mt-8 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-foreground">
         <section>
           <h2>1. Acceptance of Terms</h2>
-          <p>By browsing or placing an order through Nova Mobiles, you agree to these Terms of Service. If you do not agree, please do not use our services.</p>
+          <p>By browsing or placing an order through F.Tech, you agree to these Terms of Service. If you do not agree, please do not use our services.</p>
         </section>
 
         <section>
@@ -32,12 +32,12 @@ export function TermsOfService() {
 
         <section>
           <h2>6. Intellectual Property</h2>
-          <p>All content on this website including text, images, logos, and design is the property of Nova Mobiles. Unauthorized copying or reproduction is prohibited.</p>
+          <p>All content on this website including text, images, logos, and design is the property of F.Tech. Unauthorized copying or reproduction is prohibited.</p>
         </section>
 
         <section>
           <h2>7. Limitation of Liability</h2>
-          <p>Nova Mobiles is not liable for any indirect, incidental, or consequential damages arising from the use of products purchased. Our liability is limited to the purchase price of the product.</p>
+          <p>F.Tech is not liable for any indirect, incidental, or consequential damages arising from the use of products purchased. Our liability is limited to the purchase price of the product.</p>
         </section>
 
         <section>

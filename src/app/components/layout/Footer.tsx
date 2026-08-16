@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { Facebook, Instagram, Mail, MapPin, MessageCircle, Phone, Smartphone, Twitter, Youtube } from "lucide-react";
+import { Facebook, Instagram, Mail, MapPin, MessageCircle, Smartphone, Twitter, Youtube } from "lucide-react";
 import { buildWhatsAppLink } from "../../data/products";
 
 export function Footer() {
@@ -12,7 +12,7 @@ export function Footer() {
               <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
                 <Smartphone className="size-5" />
               </span>
-              <span className="font-bold" style={{ fontFamily: "var(--font-display)" }}>NovaMobile</span>
+              <span className="font-bold" style={{ fontFamily: "var(--font-display)" }}>F.Tech</span>
             </Link>
             <p className="max-w-xs text-sm text-muted-foreground">
               Your trusted destination for premium gadgets, mobile accessories, and Amazon surplus deals — fast delivery and easy WhatsApp ordering.
@@ -53,13 +53,10 @@ export function Footer() {
             <h4 className="mb-4 font-semibold">Contact</h4>
             <ul className="space-y-3 text-sm text-muted-foreground">
               <li className="flex items-start gap-2">
-                <MapPin className="mt-0.5 size-4 shrink-0" /> 128 Tech Avenue, San Francisco, CA
+                <MapPin className="mt-0.5 size-4 shrink-0" /> Chaklala Scheme 3, Rawalpindi, Pakistan
               </li>
               <li className="flex items-center gap-2">
-                <Phone className="size-4 shrink-0" /> +1 (555) 123-4567
-              </li>
-              <li className="flex items-center gap-2">
-                <Mail className="size-4 shrink-0" /> hello@novamobile.shop
+                <Mail className="size-4 shrink-0" /> hello@ftech.shop
               </li>
             </ul>
           </div>
@@ -81,7 +78,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row">
-          <p>© {new Date().getFullYear()} NovaMobile. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} F.Tech. All rights reserved.</p>
           <p className="flex gap-4">
             <Link to="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
             <Link to="/terms" className="hover:text-foreground transition-colors">Terms</Link>

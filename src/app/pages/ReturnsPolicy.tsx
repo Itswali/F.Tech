@@ -53,7 +53,7 @@ export function ReturnsPolicy() {
 
         <section>
           <h2>7. Warranty Claims</h2>
-          <p>Products with official manufacturer warranties should be claimed directly with the manufacturer using the included warranty card. Nova Mobiles can assist with the process on request.</p>
+          <p>Products with official manufacturer warranties should be claimed directly with the manufacturer using the included warranty card. F.Tech can assist with the process on request.</p>
         </section>
       </div>
     </div>

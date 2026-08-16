@@ -1,4 +1,4 @@
-import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Mail, MapPin, MessageCircle } from "lucide-react";
 import { ContactForm } from "../components/contact/ContactForm";
 import { WhatsAppButton } from "../components/WhatsAppButton";
 
@@ -14,9 +14,8 @@ export function Contact() {
 
       <div className="grid gap-12 lg:grid-cols-2">
         <div className="space-y-6">
-          <InfoCard icon={MapPin} title="Visit us" text="128 Tech Avenue, San Francisco, CA 94107" />
-          <InfoCard icon={Phone} title="Call us" text="+1 (555) 123-4567" />
-          <InfoCard icon={Mail} title="Email us" text="hello@novamobile.shop" />
+          <InfoCard icon={MapPin} title="Visit us" text="Chaklala Scheme 3, Rawalpindi, Pakistan" />
+          <InfoCard icon={Mail} title="Email us" text="hello@ftech.shop" />
           <div className="rounded-2xl border border-border bg-primary/5 p-6">
             <div className="mb-3 flex items-center gap-3">
               <span className="flex size-11 items-center justify-center rounded-xl bg-[#25D366]/15 text-[#1ebe5b]">

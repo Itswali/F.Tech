@@ -9,6 +9,9 @@ import { NotFound } from "./pages/NotFound";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { TermsOfService } from "./pages/TermsOfService";
 import { ReturnsPolicy } from "./pages/ReturnsPolicy";
+import { Dashboard } from "./pages/Dashboard";
+import { Login } from "./pages/Login";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +26,14 @@ export const router = createBrowserRouter([
       { path: "privacy", Component: PrivacyPolicy },
       { path: "terms", Component: TermsOfService },
       { path: "returns", Component: ReturnsPolicy },
+      { path: "login", Component: Login },
+      {
+        path: "dashboard",
+        Component: ProtectedRoute,
+        children: [
+          { index: true, Component: Dashboard }
+        ]
+      },
       { path: "*", Component: NotFound },
     ],
   },

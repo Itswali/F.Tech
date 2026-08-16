@@ -2,10 +2,21 @@ import { Link } from "react-router";
 import { motion } from "motion/react";
 import { ArrowRight, Package, ShieldCheck, Sparkles, Truck } from "lucide-react";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
-import { getFeaturedProducts } from "../../data/products";
+import { getFeaturedProducts, type Product } from "../../data/products";
+import { useState, useEffect } from "react";
 
 export function Hero() {
-  const featured = getFeaturedProducts()[0];
+  const [featured, setFeatured] = useState<Product | null>(null);
+
+  useEffect(() => {
+    getFeaturedProducts()
+      .then((data) => {
+        if (data && data.length > 0) {
+          setFeatured(data[0]);
+        }
+      })
+      .catch(console.error);
+  }, []);
 
   return (
     <section className="relative overflow-hidden">
@@ -70,8 +81,8 @@ export function Hero() {
                 <p className="text-xs uppercase font-semibold tracking-wider opacity-90 text-primary-foreground">🔥 Featured Deal</p>
                 <div className="mt-1 flex items-end justify-between">
                   <div>
-                    <p className="font-bold text-lg">{featured.name}</p>
-                    <p className="text-xs opacity-80">{featured.category} · {featured.brand}</p>
+                     <p className="font-bold text-lg">{featured.name}</p>
+                     <p className="text-xs opacity-80">{featured.category} · {featured.brand}</p>
                   </div>
                   <p className="text-2xl font-black">${featured.price}</p>
                 </div>

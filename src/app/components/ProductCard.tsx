@@ -88,9 +88,9 @@ export function ProductCard({ product }: { product: Product }) {
 
         <div className="mt-4 flex items-end justify-between">
           <div>
-            <span className="text-xl font-bold">${product.price}</span>
+            <span className="text-xl font-bold">PKR {Math.round(product.price).toLocaleString()}</span>
             {product.originalPrice && (
-              <span className="ml-2 text-sm text-muted-foreground line-through">${product.originalPrice}</span>
+              <span className="ml-2 text-sm text-muted-foreground line-through">PKR {Math.round(product.originalPrice).toLocaleString()}</span>
             )}
           </div>
         </div>

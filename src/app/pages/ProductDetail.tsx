@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router";
 import { Check, ChevronRight, ShieldCheck, Star, Truck, ZoomIn, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
@@ -7,19 +7,59 @@ import { Badge } from "../components/ui/badge";
 import { WhatsAppButton } from "../components/WhatsAppButton";
 import { ProductCard } from "../components/ProductCard";
 import { cn } from "../components/ui/utils";
-import { getProductBySlug, getRelatedProducts } from "../data/products";
+import { getProductBySlug, getRelatedProducts, type Product } from "../data/products";
 import { NotFound } from "./NotFound";
 
 export function ProductDetail() {
   const { slug } = useParams();
-  const product = slug ? getProductBySlug(slug) : undefined;
+  
+  const [product, setProduct] = useState<Product | null>(null);
+  const [related, setRelated] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
   const [activeImage, setActiveImage] = useState(0);
   const [selectedStorage, setSelectedStorage] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  if (!product) return <NotFound />;
+  useEffect(() => {
+    if (!slug) return;
+    
+    setLoading(true);
+    setError(false);
+    
+    getProductBySlug(slug)
+      .then((p) => {
+        if (!p) {
+          setError(true);
+          setLoading(false);
+          return;
+        }
+        setProduct(p);
+        
+        // Fetch related after we get the product
+        getRelatedProducts(p)
+          .then((rel) => setRelated(rel))
+          .catch(console.error);
+          
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError(true);
+        setLoading(false);
+      });
+      
+  }, [slug]);
 
-  const related = getRelatedProducts(product);
+  if (loading) {
+    return <div className="py-24 text-center text-muted-foreground">Loading product details...</div>;
+  }
+
+  if (error || !product) {
+    return <NotFound />;
+  }
+
   const hasStorage = product.storage && product.storage.length > 0 && product.storage[0] !== "—";
 
   return (
@@ -93,9 +133,9 @@ export function ProductDetail() {
           </div>
 
           <div className="mt-5 flex items-end gap-3">
-            <span className="text-3xl font-bold">${product.price}</span>
+            <span className="text-3xl font-bold">PKR {Math.round(product.price).toLocaleString()}</span>
             {product.originalPrice && (
-              <span className="pb-1 text-lg text-muted-foreground line-through">${product.originalPrice}</span>
+              <span className="pb-1 text-lg text-muted-foreground line-through">PKR {Math.round(product.originalPrice).toLocaleString()}</span>
             )}
             {product.originalPrice && product.originalPrice > product.price && (
               <span className="rounded-full bg-red-500/10 px-2.5 py-1 text-sm font-bold text-red-600">
@@ -182,9 +222,9 @@ export function ProductDetail() {
           <div className="sticky top-24 rounded-2xl border border-border bg-card/80 p-6 shadow-xl backdrop-blur-xl">
             <p className="text-xs uppercase tracking-wide font-semibold text-muted-foreground">Order Price</p>
             <div className="mt-1 flex items-end gap-2">
-              <span className="text-3xl font-bold">${product.price}</span>
+              <span className="text-3xl font-bold">PKR {Math.round(product.price).toLocaleString()}</span>
               {product.originalPrice && (
-                <span className="pb-1 text-sm text-muted-foreground line-through">${product.originalPrice}</span>
+                <span className="pb-1 text-sm text-muted-foreground line-through">PKR {Math.round(product.originalPrice).toLocaleString()}</span>
               )}
             </div>
             <p className="mt-3 text-sm text-muted-foreground">

@@ -25,7 +25,7 @@ export function About() {
             We make buying phones simple.
           </h1>
           <p className="mt-6 text-lg text-muted-foreground">
-            NovaMobile started with one belief: buying a premium phone should be fast, honest and stress-free.
+            F.Tech started with one belief: buying a premium phone should be fast, honest and stress-free.
             No confusing checkouts, no hidden fees — just genuine devices, fair prices, and a friendly chat away
             from your next upgrade.
           </p>

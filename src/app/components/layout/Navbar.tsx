@@ -34,7 +34,7 @@ export function Navbar() {
             <Smartphone className="size-5" />
           </span>
           <span className="font-display text-lg font-bold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
-            NovaMobile
+            F.Tech
           </span>
         </Link>
 
@@ -93,7 +93,7 @@ export function Navbar() {
                   <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
                     <Smartphone className="size-5" />
                   </span>
-                  <span className="font-bold" style={{ fontFamily: "var(--font-display)" }}>NovaMobile</span>
+                  <span className="font-bold" style={{ fontFamily: "var(--font-display)" }}>F.Tech</span>
                 </span>
               </div>
               <div className="flex flex-col gap-6 p-6">
