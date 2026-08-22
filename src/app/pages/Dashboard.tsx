@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router";
 import {
   Plus, Pencil, Trash2, LogOut, X, Check, PackageX,
-  LayoutDashboard, Package, Star, AlertTriangle
+  LayoutDashboard, Package, Star, AlertTriangle, Upload, ImageIcon
 } from "lucide-react";
 
 const API = "https://f-tech-backend.onrender.com/api/products";
@@ -367,10 +367,11 @@ export function Dashboard() {
                   className="input-style resize-none" placeholder="Product description..." />
               </Field>
 
-              <Field label="Image URLs (one per line)">
-                <textarea rows={3} value={(form.images || []).join("\n")}
-                  onChange={e => setArrayField("images", e.target.value)}
-                  className="input-style resize-none font-mono text-xs" placeholder="https://images.unsplash.com/..." />
+              <Field label="Product Images">
+                <ImageUploader
+                  images={form.images || []}
+                  onChange={(imgs) => setForm(f => ({ ...f, images: imgs }))}
+                />
               </Field>
 
               <Field label="Features (one per line)">
@@ -455,6 +456,117 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
     <div className="flex flex-col gap-1.5">
       <label className="text-sm font-medium text-foreground">{label}</label>
       {children}
+    </div>
+  );
+}
+
+// ── Image Uploader ─────────────────────────────────────────────────────────
+function ImageUploader({
+  images,
+  onChange,
+}: {
+  images: string[];
+  onChange: (imgs: string[]) => void;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [dragging, setDragging] = useState(false);
+
+  const processFiles = useCallback(
+    (files: FileList | null) => {
+      if (!files) return;
+      Array.from(files).forEach((file) => {
+        if (!file.type.startsWith("image/")) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const base64 = e.target?.result as string;
+          if (base64) onChange([...images, base64]);
+        };
+        reader.readAsDataURL(file);
+      });
+    },
+    [images, onChange]
+  );
+
+  // Paste anywhere in the form
+  useEffect(() => {
+    const handlePaste = (e: ClipboardEvent) => {
+      processFiles(e.clipboardData?.files ?? null);
+    };
+    window.addEventListener("paste", handlePaste);
+    return () => window.removeEventListener("paste", handlePaste);
+  }, [processFiles]);
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragging(false);
+    processFiles(e.dataTransfer.files);
+  };
+
+  const removeImage = (idx: number) => {
+    onChange(images.filter((_, i) => i !== idx));
+  };
+
+  return (
+    <div className="space-y-3">
+      {/* Drop zone */}
+      <div
+        onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={handleDrop}
+        onClick={() => inputRef.current?.click()}
+        className={`flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-6 text-center transition-colors ${
+          dragging
+            ? "border-primary bg-primary/10"
+            : "border-border bg-muted/30 hover:border-primary hover:bg-primary/5"
+        }`}
+      >
+        <div className="flex size-10 items-center justify-center rounded-full bg-primary/10">
+          <Upload className="size-5 text-primary" />
+        </div>
+        <div>
+          <p className="text-sm font-medium text-foreground">Drag &amp; drop images here</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            or <span className="text-primary underline">click to browse</span> · also try Ctrl+V to paste
+          </p>
+        </div>
+        <input
+          ref={inputRef}
+          type="file"
+          accept="image/*"
+          multiple
+          className="hidden"
+          onChange={(e) => processFiles(e.target.files)}
+        />
+      </div>
+
+      {/* Preview grid */}
+      {images.length > 0 && (
+        <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
+          {images.map((src, i) => (
+            <div key={i} className="group relative aspect-square overflow-hidden rounded-xl border border-border bg-muted">
+              {src.startsWith("data:") || src.startsWith("http") ? (
+                <img src={src} alt={`Product image ${i + 1}`} className="size-full object-cover" />
+              ) : (
+                <div className="flex size-full items-center justify-center">
+                  <ImageIcon className="size-6 text-muted-foreground" />
+                </div>
+              )}
+              <button
+                type="button"
+                onClick={() => removeImage(i)}
+                className="absolute right-1 top-1 flex size-5 items-center justify-center rounded-full bg-red-600 text-white opacity-0 transition-opacity group-hover:opacity-100"
+              >
+                <X className="size-3" />
+              </button>
+              {i === 0 && (
+                <span className="absolute bottom-1 left-1 rounded bg-black/60 px-1 py-0.5 text-[10px] text-white">
+                  Main
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

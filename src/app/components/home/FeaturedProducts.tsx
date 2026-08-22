@@ -20,12 +20,12 @@ export function FeaturedProducts() {
   }, []);
 
   return (
-    <section className="mx-auto max-w-[1440px] px-4 py-16 sm:px-6 lg:px-8">
-      <div className="mb-10 flex items-end justify-between">
-        <div>
-          <h2 className="text-3xl" style={{ fontFamily: "var(--font-display)" }}>Featured products</h2>
-          <p className="mt-2 text-muted-foreground">Handpicked flagships loved by our customers.</p>
-        </div>
+    <section className="bg-[#050810] py-16">
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
+        <div className="mb-10 flex items-end justify-between">
+          <div>
+            <h2 className="text-xl font-bold uppercase tracking-wider text-white">Best Selling Products</h2>
+          </div>
         <Link to="/products" className="hidden text-sm font-medium text-primary hover:underline sm:block">
           View all products
         </Link>
@@ -42,6 +42,7 @@ export function FeaturedProducts() {
           ))}
         </div>
       )}
+      </div>
     </section>
   );
 }

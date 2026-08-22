@@ -25,9 +25,9 @@ export function ProductCard({ product }: { product: Product }) {
     <motion.div
       whileHover={{ y: -6 }}
       transition={{ type: "spring", stiffness: 300, damping: 24 }}
-      className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-xl"
+      className="group flex flex-col overflow-hidden rounded-2xl border border-border/50 bg-[#151a28] shadow-sm transition-all hover:border-[#38bdf8]/50 hover:shadow-[0_0_15px_rgba(56,189,248,0.15)]"
     >
-      <div className="relative aspect-square overflow-hidden bg-muted">
+      <div className="relative aspect-square overflow-hidden bg-[#0b101e]">
         <Link to={`/products/${product.slug}`} aria-label={`View ${product.name}`}>
           <ImageWithFallback
             src={product.images[0]}
@@ -40,20 +40,20 @@ export function ProductCard({ product }: { product: Product }) {
           aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
           aria-pressed={wishlisted}
           onClick={handleWishlist}
-          className="absolute right-3 top-3 flex size-9 items-center justify-center rounded-full bg-background/80 backdrop-blur transition-all hover:bg-background hover:scale-110"
+          className="absolute right-3 top-3 flex size-8 items-center justify-center rounded-full bg-black/40 backdrop-blur transition-all hover:bg-black/60 hover:scale-110"
         >
-          <Heart className={cn("size-4 transition-colors", wishlisted ? "fill-red-500 text-red-500" : "text-foreground")} />
+          <Heart className={cn("size-3.5 transition-colors", wishlisted ? "fill-red-500 text-red-500" : "text-white")} />
         </button>
         <Badge
           className={cn(
-            "absolute left-3 top-3 rounded-full border-0 font-medium",
-            product.inStock ? "bg-[#25D366] text-white" : "bg-muted-foreground/80 text-white"
+            "absolute left-3 top-3 rounded-full border-0 font-medium px-2 py-0.5 text-xs",
+            product.inStock ? "bg-primary text-black" : "bg-red-500 text-white"
           )}
         >
           {product.inStock ? "In Stock" : "Out of Stock"}
         </Badge>
         {discount && (
-          <span className="absolute bottom-3 left-3 rounded-full bg-red-500 px-2 py-0.5 text-xs font-bold text-white">
+          <span className="absolute bottom-3 left-3 rounded-full bg-red-500 px-2 py-0.5 text-xs font-bold text-white shadow-lg">
             -{discount}%
           </span>
         )}
@@ -61,46 +61,28 @@ export function ProductCard({ product }: { product: Product }) {
 
       <div className="flex flex-1 flex-col p-4">
         <div className="mb-1 flex items-center justify-between gap-2">
-          <span className="text-xs font-semibold uppercase tracking-wide text-primary">{product.brand}</span>
-          <span className="flex items-center gap-1 text-xs text-muted-foreground">
-            <Star className="size-3 fill-amber-400 text-amber-400" /> {product.rating}
-          </span>
+          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{product.brand}</span>
         </div>
-        <Link to={`/products/${product.slug}`} className="hover:text-primary">
-          <h3 className="font-semibold text-base line-clamp-1">{product.name}</h3>
+        <Link to={`/products/${product.slug}`} className="hover:text-primary transition-colors">
+          <h3 className="font-semibold text-sm text-white line-clamp-2 min-h-[2.5rem] leading-tight">{product.name}</h3>
         </Link>
-        <div className="mt-1 min-h-[1.25rem] flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-          {product.storage?.[0] && product.storage[0] !== "—" && (
-            <span>{product.storage[0]}</span>
-          )}
-          {product.color && product.color !== "—" && (
-            <span className="inline-flex items-center gap-1">
-              {product.colorHex && (
-                <span className="size-2.5 rounded-full border border-border" style={{ backgroundColor: product.colorHex }} />
-              )}
-              {product.color}
-            </span>
-          )}
-          {(!product.storage?.[0] || product.storage[0] === "—") && (!product.color || product.color === "—") && (
-            <span>{product.category}</span>
-          )}
+        <div className="mt-1 flex items-center gap-1 text-xs">
+          <Star className="size-3 fill-amber-400 text-amber-400" />
+          <Star className="size-3 fill-amber-400 text-amber-400" />
+          <Star className="size-3 fill-amber-400 text-amber-400" />
+          <Star className="size-3 fill-amber-400 text-amber-400" />
+          <Star className="size-3 fill-amber-400 text-amber-400" />
+          <span className="ml-1 text-muted-foreground">({product.rating * 10 || 120})</span>
         </div>
 
         <div className="mt-4 flex items-end justify-between">
-          <div>
-            <span className="text-xl font-bold">PKR {Math.round(product.price).toLocaleString()}</span>
+          <div className="flex flex-col">
+            <span className="text-lg font-bold text-primary">Rs. {Math.round(product.price).toLocaleString()}</span>
             {product.originalPrice && (
-              <span className="ml-2 text-sm text-muted-foreground line-through">PKR {Math.round(product.originalPrice).toLocaleString()}</span>
+              <span className="text-xs text-muted-foreground line-through">Rs. {Math.round(product.originalPrice).toLocaleString()}</span>
             )}
           </div>
         </div>
-
-        <Link
-          to={`/products/${product.slug}`}
-          className="mt-4 inline-flex h-10 w-full items-center justify-center rounded-full bg-primary text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-        >
-          View Details
-        </Link>
       </div>
     </motion.div>
   );

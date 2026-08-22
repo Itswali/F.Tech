@@ -1,101 +1,76 @@
 import { Link } from "react-router";
-import { motion } from "motion/react";
-import { ArrowRight, Package, ShieldCheck, Sparkles, Truck } from "lucide-react";
-import { ImageWithFallback } from "../figma/ImageWithFallback";
-import { getFeaturedProducts, type Product } from "../../data/products";
-import { useState, useEffect } from "react";
+import { ChevronRight } from "lucide-react";
 
 export function Hero() {
-  const [featured, setFeatured] = useState<Product | null>(null);
-
-  useEffect(() => {
-    getFeaturedProducts()
-      .then((data) => {
-        if (data && data.length > 0) {
-          setFeatured(data[0]);
-        }
-      })
-      .catch(console.error);
-  }, []);
-
   return (
-    <section className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -left-40 -top-40 size-96 rounded-full bg-primary/20 blur-3xl" />
-        <div className="absolute -right-32 top-32 size-96 rounded-full bg-primary/10 blur-3xl" />
+    <section className="relative overflow-hidden bg-[#050810]">
+      {/* Abstract dark tech background elements */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        <div className="absolute -top-[30%] -left-[10%] h-[600px] w-[600px] rounded-full bg-primary/5 blur-[120px]"></div>
+        <div className="absolute -bottom-[20%] -right-[10%] h-[600px] w-[600px] rounded-full bg-[#38bdf8]/10 blur-[120px]"></div>
       </div>
 
-      <div className="mx-auto grid max-w-[1440px] items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:gap-8 lg:px-8 lg:py-24">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="max-w-xl"
-        >
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-4 py-1.5 text-sm font-medium text-muted-foreground backdrop-blur">
-            <Sparkles className="size-4 text-primary" /> Amazon Surplus &amp; Gadgets Deals 2026
-          </span>
-          <h1 className="mt-6 text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl" style={{ fontFamily: "var(--font-display)" }}>
-            Trending gadgets, accessories &amp; <span className="text-primary">package deals.</span>
-          </h1>
-          <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-            Discover authentic mobile accessories, power banks, earpods, action cameras, lifestyle gadgets, and Amazon mystery packages at unbeatable prices. Order directly on WhatsApp!
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              to="/products"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 font-medium text-primary-foreground transition-colors hover:bg-primary/90 shadow-md"
-            >
-              Explore All Gadgets <ArrowRight className="size-4" />
-            </Link>
-            <Link
-              to="/products?category=Amazon+Mystery+Packages"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-border bg-background px-7 font-medium transition-colors hover:bg-accent"
-            >
-              <Package className="size-4 text-primary" /> Mystery Package Deals
-            </Link>
-          </div>
-          <div className="mt-10 flex flex-wrap gap-6 text-sm text-muted-foreground">
-            <span className="flex items-center gap-2"><ShieldCheck className="size-4 text-primary" /> Verified authentic</span>
-            <span className="flex items-center gap-2"><Truck className="size-4 text-primary" /> Fast dispatch</span>
-            <span className="flex items-center gap-2"><Sparkles className="size-4 text-primary" /> Unbeatable value</span>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="relative"
-        >
-          {featured && (
-            <div className="relative overflow-hidden rounded-[2rem] border border-border bg-card shadow-2xl">
-              <div className="aspect-[4/5] bg-muted">
-                <ImageWithFallback
-                  src={featured.images[0]}
-                  alt={featured.name}
-                  className="size-full object-cover"
-                />
-              </div>
-              <div className="absolute bottom-4 left-4 right-4 rounded-2xl border border-white/20 bg-black/50 p-5 text-white backdrop-blur-md">
-                <p className="text-xs uppercase font-semibold tracking-wider opacity-90 text-primary-foreground">🔥 Featured Deal</p>
-                <div className="mt-1 flex items-end justify-between">
-                  <div>
-                     <p className="font-bold text-lg">{featured.name}</p>
-                     <p className="text-xs opacity-80">{featured.category} · {featured.brand}</p>
-                  </div>
-                  <p className="text-2xl font-black">${featured.price}</p>
+      <div className="relative z-10 mx-auto max-w-[1440px] px-4 py-12 sm:px-6 lg:px-8 lg:py-20">
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+          <div className="max-w-2xl">
+            <h1 className="text-5xl font-black uppercase tracking-tight text-white sm:text-6xl lg:text-7xl">
+              SMART TECH.<br />
+              <span className="bg-gradient-to-r from-primary to-[#38bdf8] bg-clip-text text-transparent">
+                GREAT PRICES.
+              </span>
+            </h1>
+            <p className="mt-6 max-w-xl text-lg text-muted-foreground sm:text-xl">
+              Premium Quality Products<br />At Affordable Prices.
+            </p>
+            
+            <div className="mt-8 flex flex-wrap items-center gap-6 text-sm font-medium text-slate-300">
+              <div className="flex items-center gap-2">
+                <div className="flex size-6 items-center justify-center rounded-full bg-primary/20">
+                  <div className="size-2 rounded-full bg-primary"></div>
                 </div>
-                <Link
-                  to={`/products/${featured.slug}`}
-                  className="mt-4 inline-flex h-10 w-full items-center justify-center rounded-full bg-white text-sm font-semibold text-black transition-colors hover:bg-white/90"
-                >
-                  View Featured Deal
-                </Link>
+                100% Original<br/>Products
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="flex size-6 items-center justify-center rounded-full bg-primary/20">
+                  <div className="size-2 rounded-full bg-primary"></div>
+                </div>
+                Best Prices<br/>Guaranteed
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="flex size-6 items-center justify-center rounded-full bg-primary/20">
+                  <div className="size-2 rounded-full bg-primary"></div>
+                </div>
+                Fast & Safe<br/>Delivery
               </div>
             </div>
-          )}
-        </motion.div>
+
+            <div className="mt-10 flex items-center gap-4">
+              <Link
+                to="/products"
+                className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-primary to-[#10b981] px-8 py-3.5 text-sm font-bold text-black shadow-[0_0_20px_rgba(0,230,118,0.3)] transition-all hover:shadow-[0_0_30px_rgba(0,230,118,0.5)]"
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  SHOP NOW <ChevronRight className="size-4" />
+                </span>
+                <div className="absolute inset-0 z-0 bg-white/20 opacity-0 transition-opacity group-hover:opacity-100"></div>
+              </Link>
+            </div>
+          </div>
+
+          <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
+            {/* Using a placeholder for the gadget composition shown in mockup */}
+            <div className="relative aspect-square md:aspect-video lg:aspect-square overflow-hidden rounded-2xl">
+               <img 
+                 src="https://images.unsplash.com/photo-1615526675159-e248c3021d3f?q=80&w=1000&auto=format&fit=crop" 
+                 alt="Premium tech gadgets"
+                 className="h-full w-full object-cover object-center mix-blend-lighten opacity-80"
+               />
+               <div className="absolute inset-0 bg-gradient-to-t from-[#050810] via-transparent to-transparent"></div>
+               <div className="absolute inset-0 bg-gradient-to-r from-[#050810] via-transparent to-transparent lg:block hidden"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

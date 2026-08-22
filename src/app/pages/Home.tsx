@@ -1,5 +1,6 @@
 import { Hero } from "../components/home/Hero";
-import { Categories } from "../components/home/Categories";
+import { FeatureBadges } from "../components/home/FeatureBadges";
+import { QuickCategories } from "../components/home/QuickCategories";
 import { FeaturedProducts } from "../components/home/FeaturedProducts";
 import { WhyChooseUs } from "../components/home/WhyChooseUs";
 import { Brands } from "../components/home/Brands";
@@ -11,7 +12,8 @@ export function Home() {
   return (
     <>
       <Hero />
-      <Categories />
+      <FeatureBadges />
+      <QuickCategories />
       <FeaturedProducts />
       <WhyChooseUs />
       <Brands />

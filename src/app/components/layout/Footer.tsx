@@ -1,11 +1,55 @@
 import { Link } from "react-router";
-import { Facebook, Instagram, Mail, MapPin, MessageCircle, Smartphone, Twitter, Youtube } from "lucide-react";
+import { Facebook, Instagram, Mail, MapPin, MessageCircle, Smartphone, Twitter, Youtube, ShieldCheck, BadgeCheck } from "lucide-react";
 import { buildWhatsAppLink } from "../../data/products";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-muted/40">
-      <div className="mx-auto max-w-[1440px] px-4 py-14 sm:px-6 lg:px-8">
+    <footer className="border-t border-border/50 bg-[#050810]">
+      <div className="mx-auto max-w-[1440px] px-4 py-10 sm:px-6 lg:px-8">
+        
+        {/* Trust Badges */}
+        <div className="mb-12 flex flex-wrap items-center justify-between gap-6 border-b border-border/50 pb-8 lg:flex-nowrap">
+          <div className="flex items-center gap-4">
+            <div className="flex size-12 items-center justify-center rounded-full border border-border/50 bg-[#151a28]">
+              <ShieldCheck className="size-6 text-primary" />
+            </div>
+            <div>
+              <h4 className="font-bold text-white uppercase">100% Original Products</h4>
+              <p className="text-sm text-muted-foreground">We Deal Only In Original & Genuine Products</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex size-12 items-center justify-center rounded-full border border-border/50 bg-[#151a28]">
+              <BadgeCheck className="size-6 text-primary" />
+            </div>
+            <div>
+              <h4 className="font-bold text-white uppercase">Best Value For Money</h4>
+              <p className="text-sm text-muted-foreground">Get The Best Quality Products At Best Prices</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex size-12 items-center justify-center rounded-full border border-border/50 bg-[#151a28]">
+              <MessageCircle className="size-6 text-primary" />
+            </div>
+            <div>
+              <h4 className="font-bold text-white uppercase">Connect With Us</h4>
+              <p className="text-sm text-muted-foreground mb-2">Follow Us On Social Media</p>
+              <div className="flex gap-2">
+                {[Facebook, Instagram, Twitter, Youtube].map((Icon, i) => (
+                  <a
+                    key={i}
+                    href="#"
+                    aria-label="Social link"
+                    className="flex size-7 items-center justify-center rounded-full bg-[#151a28] text-muted-foreground transition-colors hover:text-primary"
+                  >
+                    <Icon className="size-3.5" />
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-4">
             <Link to="/" className="flex items-center gap-2">

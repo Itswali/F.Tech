@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from "react-router";
 import { useEffect } from "react";
 import { Navbar } from "./Navbar";
+import { Sidebar } from "./Sidebar";
 import { Footer } from "./Footer";
 import { BackToTop } from "../ui/BackToTop";
 import { ErrorBoundary } from "../ErrorBoundary";
@@ -17,9 +18,12 @@ export function RootLayout() {
     <ErrorBoundary>
       <div className="min-h-screen flex flex-col bg-background text-foreground">
         <Navbar />
-        <main className="flex-1">
-          <Outlet />
-        </main>
+        <div className="mx-auto flex w-full max-w-[1440px] flex-1 items-start">
+          <Sidebar />
+          <main className="flex-1 min-w-0 w-full pb-10">
+            <Outlet />
+          </main>
+        </div>
         <Footer />
         <BackToTop />
       </div>
