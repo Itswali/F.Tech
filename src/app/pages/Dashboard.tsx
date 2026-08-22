@@ -60,6 +60,7 @@ export function Dashboard() {
   const [form, setForm] = useState<Omit<Product, "_id">>(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState("");
+  const [specsText, setSpecsText] = useState("");
 
   // Delete confirm
   const [deleteTarget, setDeleteTarget] = useState<Product | null>(null);
@@ -92,6 +93,7 @@ export function Dashboard() {
   function openAdd() {
     setEditTarget(null);
     setForm(EMPTY_FORM);
+    setSpecsText("");
     setFormError("");
     setModalOpen(true);
   }
@@ -100,6 +102,7 @@ export function Dashboard() {
   function openEdit(product: Product) {
     setEditTarget(product);
     setForm({ ...product });
+    setSpecsText(Object.entries(product.specs || {}).map(([k, v]) => `${k}: ${v}`).join("\n"));
     setFormError("");
     setModalOpen(true);
   }
@@ -110,9 +113,16 @@ export function Dashboard() {
     setSaving(true);
     setFormError("");
     try {
+      const specs: Record<string, string> = {};
+      specsText.split("\n").forEach(line => {
+        const [k, ...rest] = line.split(":");
+        if (k && rest.length) specs[k.trim()] = rest.join(":").trim();
+      });
+      const finalForm = { ...form, specs };
+
       const url = editTarget ? `${API}/${editTarget.slug}` : API;
       const method = editTarget ? "PUT" : "POST";
-      const res = await fetch(url, { method, headers: authHeaders(), body: JSON.stringify(form) });
+      const res = await fetch(url, { method, headers: authHeaders(), body: JSON.stringify(finalForm) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to save product");
       setModalOpen(false);
@@ -151,16 +161,6 @@ export function Dashboard() {
   // Helper to update images/features array fields
   function setArrayField(field: "images" | "features", value: string) {
     setForm(f => ({ ...f, [field]: value.split("\n").map(s => s.trim()).filter(Boolean) }));
-  }
-
-  // Helper to update specs
-  function setSpecsField(value: string) {
-    const specs: Record<string, string> = {};
-    value.split("\n").forEach(line => {
-      const [k, ...rest] = line.split(":");
-      if (k && rest.length) specs[k.trim()] = rest.join(":").trim();
-    });
-    setForm(f => ({ ...f, specs }));
   }
 
   return (
@@ -382,8 +382,8 @@ export function Dashboard() {
 
               <Field label="Specs (key: value, one per line)">
                 <textarea rows={3}
-                  value={Object.entries(form.specs || {}).map(([k, v]) => `${k}: ${v}`).join("\n")}
-                  onChange={e => setSpecsField(e.target.value)}
+                  value={specsText}
+                  onChange={e => setSpecsText(e.target.value)}
                   className="input-style resize-none font-mono text-xs" placeholder="Battery: 10000 mAh&#10;Weight: 280g" />
               </Field>
 
