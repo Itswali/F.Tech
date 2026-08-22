@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router";
-import { Search, ShoppingCart, User, Truck, ShieldCheck, Phone, Facebook, Instagram, Twitter, MessageCircle } from "lucide-react";
+import { Search, User, Truck, ShieldCheck, Phone, Facebook, Instagram, Twitter, MessageCircle } from "lucide-react";
 import { Input } from "../ui/input";
 import { cn } from "../ui/utils";
 
