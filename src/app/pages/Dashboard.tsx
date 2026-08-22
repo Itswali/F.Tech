@@ -266,7 +266,7 @@ export function Dashboard() {
                       </td>
                       <td className="px-4 py-4">
                         <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${product.inStock ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400" : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"}`}>
-                          {product.inStock ? "In Stock" : "Out of Stock"}
+                          {product.inStock ? "In-Stock" : "Out of Stock"}
                         </span>
                       </td>
                       <td className="px-4 py-4">
@@ -301,16 +301,16 @@ export function Dashboard() {
 
       {/* ── Add / Edit Modal ── */}
       {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/60 p-4 pt-10 backdrop-blur-sm">
-          <div className="w-full max-w-2xl rounded-2xl border border-border bg-card shadow-2xl">
-            <div className="flex items-center justify-between border-b border-border px-6 py-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+          <div className="flex w-full max-w-2xl max-h-[90vh] flex-col rounded-2xl border border-border bg-card shadow-2xl">
+            <div className="flex items-center justify-between border-b border-border px-6 py-4 shrink-0">
               <h2 className="text-lg font-semibold">{editTarget ? "Edit Product" : "Add New Product"}</h2>
               <button onClick={() => setModalOpen(false)} className="rounded-lg p-1.5 hover:bg-accent">
                 <X className="size-5" />
               </button>
             </div>
 
-            <form onSubmit={handleSave} className="space-y-5 p-6">
+            <form onSubmit={handleSave} className="flex-1 overflow-y-auto space-y-5 p-6">
               {formError && (
                 <div className="rounded-lg bg-red-50 p-3 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-400">
                   {formError}

@@ -59,15 +59,13 @@ export function Hero() {
           </div>
 
           <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
-            {/* Using a placeholder for the gadget composition shown in mockup */}
-            <div className="relative aspect-square md:aspect-video lg:aspect-square overflow-hidden rounded-2xl">
+            <div className="relative aspect-[2.5/1] md:aspect-video lg:aspect-[2.5/1] overflow-hidden rounded-2xl border border-border/50">
                <img 
-                 src="https://images.unsplash.com/photo-1615526675159-e248c3021d3f?q=80&w=1000&auto=format&fit=crop" 
-                 alt="Premium tech gadgets"
-                 className="h-full w-full object-cover object-center mix-blend-lighten opacity-80"
+                 src="/banner-amazon.jpg" 
+                 alt="Amazon Return Stock Sales"
+                 className="h-full w-full object-cover object-center"
                />
-               <div className="absolute inset-0 bg-gradient-to-t from-[#050810] via-transparent to-transparent"></div>
-               <div className="absolute inset-0 bg-gradient-to-r from-[#050810] via-transparent to-transparent lg:block hidden"></div>
+               <div className="absolute inset-0 bg-gradient-to-t from-[#050810]/50 via-transparent to-transparent"></div>
             </div>
           </div>
         </div>

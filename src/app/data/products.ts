@@ -32,7 +32,7 @@ export interface Product {
 }
 
 // Store WhatsApp contact number (international format)
-export const WHATSAPP_NUMBER = "15551234567";
+export const WHATSAPP_NUMBER = "923185114774";
 
 const img = (id: string, w = 800, h = 800) =>
   `https://images.unsplash.com/photo-${id}?w=${w}&h=${h}&fit=crop&auto=format`;

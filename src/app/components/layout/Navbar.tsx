@@ -37,7 +37,7 @@ export function Navbar() {
             <ShieldCheck className="size-3.5 text-primary" /> Quality Products. Trusted Service.
           </div>
           <div className="flex items-center gap-6">
-            <span className="flex items-center gap-2"><Phone className="size-3.5 text-primary" /> Customer Support: 24/7</span>
+            <span className="flex items-center gap-2"><Phone className="size-3.5 text-primary" /> WhatsApp: 0318 5114774</span>
             <div className="flex items-center gap-3">
               <a href="#" className="hover:text-primary transition-colors"><Facebook className="size-3.5" /></a>
               <a href="#" className="hover:text-primary transition-colors"><Instagram className="size-3.5" /></a>
@@ -53,15 +53,8 @@ export function Navbar() {
         <div className="mx-auto flex h-20 max-w-[1440px] items-center justify-between px-4 lg:px-8">
           
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 shrink-0">
-            <div className="flex text-4xl font-black italic tracking-tighter">
-              <span className="text-[#38bdf8]">F</span>
-              <span className="text-primary -ml-1">.</span>
-            </div>
-            <div className="flex flex-col justify-center leading-none">
-              <span className="font-display text-xl font-bold tracking-tight text-white uppercase">F.Tech</span>
-              <span className="text-[10px] tracking-widest text-muted-foreground uppercase">Online Shopping</span>
-            </div>
+          <Link to="/" className="flex items-center shrink-0">
+            <img src="/logo-ftech.jpg" alt="F.Tech Online Shopping" className="h-14 w-auto rounded-lg object-contain" />
           </Link>
 
           {/* Search */}

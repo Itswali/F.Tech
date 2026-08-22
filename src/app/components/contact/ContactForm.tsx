@@ -45,7 +45,7 @@ export function ContactForm() {
             required: "Please enter your phone number",
             pattern: { value: /^[+\d][\d\s()-]{6,}$/, message: "Enter a valid phone number" },
           })}
-          placeholder="+1 (555) 123-4567"
+          placeholder="0318 5114774"
           inputMode="tel"
           aria-invalid={!!errors.phone}
           className={cn(errors.phone && "border-destructive")}

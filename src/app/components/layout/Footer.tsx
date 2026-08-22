@@ -52,11 +52,8 @@ export function Footer() {
 
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-4">
-            <Link to="/" className="flex items-center gap-2">
-              <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-                <Smartphone className="size-5" />
-              </span>
-              <span className="font-bold" style={{ fontFamily: "var(--font-display)" }}>F.Tech</span>
+            <Link to="/" className="flex items-center">
+              <img src="/logo-ftech.jpg" alt="F.Tech Online Shopping" className="h-12 w-auto rounded-lg object-contain" />
             </Link>
             <p className="max-w-xs text-sm text-muted-foreground">
               Your trusted destination for premium gadgets, mobile accessories, and Amazon surplus deals — fast delivery and easy WhatsApp ordering.
