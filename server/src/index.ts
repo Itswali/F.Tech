@@ -51,8 +51,18 @@ if (!MONGODB_URI) {
 }
 
 mongoose.connect(MONGODB_URI)
-  .then(() => {
+  .then(async () => {
     console.log('Successfully connected to MongoDB');
+    
+    // Sync indexes to remove any old indexes (like the unique slug index)
+    try {
+      const Product = (await import('./models/Product')).default;
+      await Product.syncIndexes();
+      console.log('Successfully synced Product indexes.');
+    } catch (err) {
+      console.error('Error syncing indexes:', err);
+    }
+
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });

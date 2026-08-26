@@ -137,7 +137,8 @@ export function Dashboard() {
       if (!res.ok) {
         let errMsg = data?.message || "Failed to save product";
         if (data?.error?.code === 11000) {
-          errMsg = "A product with this slug already exists. Please use a unique slug.";
+          const duplicateField = data?.error?.keyValue ? Object.keys(data.error.keyValue)[0] : "slug";
+          errMsg = `A product with this ${duplicateField} already exists. Please use a unique value.`;
         } else if (data?.error?.message) {
           errMsg += `: ${data.error.message}`;
         }
