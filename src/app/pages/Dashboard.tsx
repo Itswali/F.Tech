@@ -118,7 +118,9 @@ export function Dashboard() {
         const [k, ...rest] = line.split(":");
         if (k && rest.length) specs[k.trim()] = rest.join(":").trim();
       });
-      const finalForm = { ...form, specs };
+      
+      const features = (form.features || []).map(f => f.trim()).filter(Boolean);
+      const finalForm = { ...form, specs, features };
 
       const url = editTarget ? `${API}/${editTarget.slug}` : API;
       const method = editTarget ? "PUT" : "POST";
@@ -131,8 +133,16 @@ export function Dashboard() {
         const text = await res.text();
         throw new Error(`Server error: ${res.status} ${res.statusText} - ${text.substring(0, 50)}`);
       }
-      
-      if (!res.ok) throw new Error(data?.message || "Failed to save product");
+
+      if (!res.ok) {
+        let errMsg = data?.message || "Failed to save product";
+        if (data?.error?.code === 11000) {
+          errMsg = "A product with this slug already exists. Please use a unique slug.";
+        } else if (data?.error?.message) {
+          errMsg += `: ${data.error.message}`;
+        }
+        throw new Error(errMsg);
+      }
       
       setModalOpen(false);
       fetchProducts();
@@ -169,7 +179,7 @@ export function Dashboard() {
 
   // Helper to update images/features array fields
   function setArrayField(field: "images" | "features", value: string) {
-    setForm(f => ({ ...f, [field]: value.split("\n").map(s => s.trim()).filter(Boolean) }));
+    setForm(f => ({ ...f, [field]: value.split("\n") }));
   }
 
   return (
