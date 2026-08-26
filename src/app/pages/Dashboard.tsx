@@ -123,8 +123,17 @@ export function Dashboard() {
       const url = editTarget ? `${API}/${editTarget.slug}` : API;
       const method = editTarget ? "PUT" : "POST";
       const res = await fetch(url, { method, headers: authHeaders(), body: JSON.stringify(finalForm) });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to save product");
+      let data;
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        throw new Error(`Server error: ${res.status} ${res.statusText} - ${text.substring(0, 50)}`);
+      }
+      
+      if (!res.ok) throw new Error(data?.message || "Failed to save product");
+      
       setModalOpen(false);
       fetchProducts();
     } catch (e: any) {
