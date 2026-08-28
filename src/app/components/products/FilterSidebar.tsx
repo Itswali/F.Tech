@@ -2,8 +2,6 @@ import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
 import { Slider } from "../ui/slider";
 import { Button } from "../ui/button";
-import { categories as defaultCategories } from "../../data/products";
-
 export interface Filters {
   categories: string[];
   brands: string[];
@@ -19,7 +17,6 @@ interface FilterSidebarProps {
   onChange: (filters: Filters) => void;
   priceMax: number;
   availableBrands?: string[];
-  availableCategories?: string[];
   onReset: () => void;
 }
 
@@ -32,10 +29,8 @@ export function FilterSidebar({
   onChange,
   priceMax,
   availableBrands = [],
-  availableCategories,
   onReset,
 }: FilterSidebarProps) {
-  const categoriesList = availableCategories || defaultCategories.map((c) => c.name);
   const currentPrice: [number, number] = filters.price || [0, priceMax || 9999];
 
   return (
@@ -52,20 +47,7 @@ export function FilterSidebar({
         </Button>
       </div>
 
-      {/* Category */}
-      <FilterGroup title="Category">
-        {categoriesList.map((catName) => (
-          <CheckRow
-            key={catName}
-            id={`cat-${catName}`}
-            label={catName}
-            checked={(filters.categories || []).includes(catName)}
-            onCheckedChange={() =>
-              onChange({ ...filters, categories: toggle(filters.categories, catName) })
-            }
-          />
-        ))}
-      </FilterGroup>
+      {/* Category section removed as it's now handled by main sidebar */}
 
       {/* Brand */}
       {availableBrands.length > 0 && (
