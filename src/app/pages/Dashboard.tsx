@@ -4,6 +4,7 @@ import {
   Plus, Pencil, Trash2, LogOut, X, Check, PackageX,
   LayoutDashboard, Package, Star, AlertTriangle, Upload, ImageIcon
 } from "lucide-react";
+import { categories as catalogCategories } from "../data/products";
 
 const API = "https://f-tech-backend.onrender.com/api/products";
 
@@ -36,11 +37,7 @@ const EMPTY_FORM: Omit<Product, "_id"> = {
   features: [], specs: {}, color: "",
 };
 
-const CATEGORIES = [
-  "Amazon Mystery Packages", "Chargers & Power", "Cables & Hubs",
-  "Audio & Earpods", "Smart Gadgets & Fitness", "Cameras & Tech",
-  "Outdoor & Tactical", "Home & Kitchen Gadgets",
-];
+const CATEGORIES = catalogCategories.map(c => c.name);
 
 function getToken() { return localStorage.getItem("adminToken") || ""; }
 
