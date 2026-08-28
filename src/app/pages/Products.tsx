@@ -59,11 +59,18 @@ export function Products() {
   useEffect(() => {
     const cat = searchParams.get("category");
     const q = searchParams.get("q") || "";
-    if (cat && !(filters.categories || []).includes(cat)) {
-      setFilters((f) => ({ ...f, categories: [cat] }));
-    }
+    
+    setFilters((f) => {
+      const currentCat = f.categories?.[0] || null;
+      const targetCat = cat || null;
+      if (targetCat !== currentCat) {
+        return { ...f, categories: targetCat ? [targetCat] : [] };
+      }
+      return f;
+    });
+
     if (q !== search) setSearch(q);
-  }, [searchParams]);
+  }, [searchParams, search]);
 
   // Dynamic brands from catalog
   const brands = useMemo(
@@ -160,9 +167,9 @@ export function Products() {
         </p>
       </div>
 
-      <div className="flex gap-8">
+      <div className="flex gap-5">
         {/* Desktop sidebar */}
-        <aside className="hidden w-64 shrink-0 lg:block">{sidebar}</aside>
+        <aside className="hidden w-48 shrink-0 lg:block">{sidebar}</aside>
 
         <div className="flex-1 min-w-0">
           {/* Toolbar */}
